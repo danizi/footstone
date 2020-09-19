@@ -9,4 +9,12 @@
     <color name="greenyellow">#ADFF2F</color>
     <color name="colorBlack">#000000</color>
     <color name="player_panel_background_color">#33000000</color>
+
+    <!-- 节目表相关 -->
+    <color name="program_bg">#33000000</color>
+    <color name="program_text">#ffffff</color>
+    <color name="program_sel">#3F51B5</color>
+    <color name="program_divider">#33a68d8d</color>
+
+    <color name="tran">#00ffffff</color>
 </resources>

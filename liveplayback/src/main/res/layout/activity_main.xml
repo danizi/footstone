@@ -1,27 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:clipChildren="false"
-    android:background="@drawable/main_bg"
-    android:orientation="vertical">
+    android:background="@drawable/main_bg">
 
-    <android.support.v7.widget.RecyclerView
-        android:focusable="false"
-        android:id="@+id/ry_menu_item"
-        android:layout_width="200dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:clipToPadding="false"
-        android:paddingBottom="15dp"
-        android:layout_marginBottom="15dp"
-        android:layout_marginStart="38dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginTop="45dp"
-        android:paddingTop="0dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"/>
+    <!--视频-->
+    <com.hejunlin.liveplayback.widget.ijkplayer.CusVideoView
+        android:id="@+id/view_video_View"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
+    <!--菜单-->
+    <com.hejunlin.liveplayback.widget.LinkageMenu
+        android:id="@+id/view_linkageMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"/>
 
-</RelativeLayout>
+</FrameLayout>

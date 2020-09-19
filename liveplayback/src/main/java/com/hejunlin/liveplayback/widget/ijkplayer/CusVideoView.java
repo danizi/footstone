@@ -1,35 +1,19 @@
-/*
- * Copyright (C) 2016 hejunlin <hejunlin2013@gmail.com>
- * 
- * Github:https://github.com/hejunlin2013/LivePlayback
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+package com.hejunlin.liveplayback.widget.ijkplayer;
 
-package com.hejunlin.liveplayback;
-
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.res.Configuration;
 import android.net.Uri;
-import android.os.Bundle;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.hejunlin.liveplayback.R;
 import com.hejunlin.liveplayback.widget.ijkplayer.media.IjkVideoView;
 
 import java.text.SimpleDateFormat;
@@ -38,12 +22,9 @@ import java.util.Calendar;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
-/**
- * Created by hejunlin on 2016/10/28.
- * blog: http://blog.csdn.net/hejjunlin
- */
-public class LiveActivity extends Activity {
+public class CusVideoView extends FrameLayout {
 
+    // 播放相关
     private IjkVideoView mVideoView;
     private RelativeLayout mVideoViewLayout;
     private RelativeLayout mLoadingLayout;
@@ -53,29 +34,65 @@ public class LiveActivity extends Activity {
     private int mRetryTimes = 0;
     private static final int CONNECTION_TIMES = 5;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_live);
-        mVideoUrl = getIntent().getStringExtra("url");
-        mVideoView = (IjkVideoView) findViewById(R.id.videoview);
-        mVideoViewLayout = (RelativeLayout) findViewById(R.id.fl_videoview);
-        mLoadingLayout = (RelativeLayout) findViewById(R.id.rl_loading);
-        mLoadingText = (TextView) findViewById(R.id.tv_load_msg);
-        mTextClock = (TextView)findViewById(R.id.tv_time);
+    public CusVideoView(Context context) {
+        super(context);
+        init();
+    }
+
+    public CusVideoView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
+
+    public CusVideoView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init();
+    }
+
+    @SuppressLint("NewApi")
+    public CusVideoView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        init();
+    }
+
+    private void init(){
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.player_video_view,null,false);
+        addView(view);
+
+        mVideoView = (IjkVideoView) view.findViewById(R.id.videoview);
+        mVideoViewLayout = (RelativeLayout) view.findViewById(R.id.fl_videoview);
+        mLoadingLayout = (RelativeLayout) view.findViewById(R.id.rl_loading);
+        mLoadingText = (TextView) view.findViewById(R.id.tv_load_msg);
+        mTextClock = (TextView) view.findViewById(R.id.tv_time);
         mTextClock.setText(getDateFormate());
         mLoadingText.setText("节目加载中...");
-        initVideo();
     }
 
-    private String getDateFormate(){
+    private String getDateFormate() {
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String formattedDate = df.format(c.getTime());
-        return formattedDate;
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return df.format(c.getTime());
     }
 
-    public void initVideo() {
+    public void release() {
+        if (!mVideoView.isBackgroundPlayEnabled()) {
+            mVideoView.stopPlayback();
+            mVideoView.release(true);
+            mVideoView.stopBackgroundPlay();
+            //IjkMediaPlayer.native_profileEnd();
+        }
+    }
+
+    public void initVideo(String url) {
+        Log.i("TAG", "url : " + url);
+        if (!mVideoView.isBackgroundPlayEnabled()) {
+            mVideoView.stopPlayback();
+            mVideoView.release(true);
+            mVideoView.stopBackgroundPlay();
+        }
+        mVideoView.initVideoView(getContext());
+
+        mVideoUrl = url;
         // init player
         IjkMediaPlayer.loadLibrariesOnce(null);
         IjkMediaPlayer.native_profileBegin("libijkplayer.so");
@@ -117,17 +134,19 @@ public class LiveActivity extends Activity {
             @Override
             public boolean onError(IMediaPlayer mp, int what, int extra) {
                 if (mRetryTimes > CONNECTION_TIMES) {
-                    new AlertDialog.Builder(LiveActivity.this)
+                    new AlertDialog.Builder(getContext())
                             .setMessage("节目暂时不能播放")
                             .setPositiveButton(R.string.VideoView_error_button,
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int whichButton) {
-                                            LiveActivity.this.finish();
+                                            //MainActivity.this.finish();
+                                            dialog.dismiss();
                                         }
                                     })
                             .setCancelable(false)
                             .show();
                 } else {
+                    mRetryTimes++;
                     mVideoView.stopPlayback();
                     mVideoView.release(true);
                     mVideoView.setVideoURI(Uri.parse(mVideoUrl));
@@ -137,37 +156,4 @@ public class LiveActivity extends Activity {
         });
 
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (!mVideoView.isBackgroundPlayEnabled()) {
-            mVideoView.stopPlayback();
-            mVideoView.release(true);
-            mVideoView.stopBackgroundPlay();
-        }
-        IjkMediaPlayer.native_profileEnd();
-    }
-
-    public static void activityStart(Context context, String url) {
-        Intent intent = new Intent(context, LiveActivity.class);
-        intent.putExtra("url", url);
-        context.startActivity(intent);
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-    }
-
 }

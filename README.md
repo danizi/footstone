@@ -265,13 +265,13 @@ public class LiveActivity extends Activity {
         android:layout_height="match_parent"
         android:background="@color/colorBlack">
 
-        <com.hejunlin.liveplayback.ijkplayer.media.IjkVideoView
+        <com.hejunlin.liveplayback.widget.ijkplayer.media.IjkVideoView
             android:id="@+id/videoview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:background="@color/colorBlack">
-        </com.hejunlin.liveplayback.ijkplayer.media.IjkVideoView>
+        </com.hejunlin.liveplayback.widget.ijkplayer.media.IjkVideoView>
 
         <RelativeLayout
             android:id="@+id/rl_loading"

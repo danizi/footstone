@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     android:focusableInTouchMode="true"
     android:clickable="true"
-    android:background="@drawable/btn"
     android:focusable="true">
 
     <TextView

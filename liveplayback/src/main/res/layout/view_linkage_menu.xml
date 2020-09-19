@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+
+
+    <!--节目时段表-->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_program_epg"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:background="@color/design_default_color_primary"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/rv_program_collection" />
+
+    <!--节目类型-->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_program_type"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/program_bg"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!--节目集合-->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_program_collection"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/program_bg"
+        app:layout_constraintStart_toEndOf="@+id/rv_program_type" />
+
+    <!--分割线-->
+    <View
+        android:layout_width="2dp"
+        android:layout_height="match_parent"
+        android:background="@color/program_divider"
+        app:layout_constraintLeft_toRightOf="@+id/rv_program_type" />
+
+    <!--向右箭头-->
+    <FrameLayout
+        android:visibility="gone"
+        android:id="@+id/right_arrow"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="#b65353"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rv_program_epg"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>

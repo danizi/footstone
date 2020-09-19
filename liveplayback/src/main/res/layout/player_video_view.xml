@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#22000000"
-    android:orientation="vertical">
+    android:background="#22000000">
 
     <RelativeLayout
         android:id="@+id/fl_videoview"
@@ -16,8 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:background="@color/colorBlack">
-        </com.hejunlin.liveplayback.widget.ijkplayer.media.IjkVideoView>
+            android:background="@color/colorBlack"/>
 
         <RelativeLayout
             android:id="@+id/rl_loading"
@@ -45,39 +43,38 @@
                 android:indeterminateDrawable="@drawable/video_loading"
                 android:padding="5dp" />
         </RelativeLayout>
-        
+
         <LinearLayout
-            android:visibility="gone"
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/player_panel_background_color">
+            android:background="@color/player_panel_background_color"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
-                android:textSize="24dp"
-                android:text="Android TV开发总结（六）构建一个TV app的直播节目实例"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="18dp"
-                android:textColor="@color/white"/>
-            
+                android:text="Android TV开发总结（六）构建一个TV app的直播节目实例"
+                android:textColor="@color/white"
+                android:textSize="24dp" />
+
             <TextView
                 android:id="@+id/tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
-                android:textSize="20dp"
-                android:layout_toRightOf="@id/tv_title"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="60dp"
                 android:layout_marginTop="20dp"
-                android:textColor="@color/white"/>
+                android:layout_toRightOf="@id/tv_title"
+                android:textColor="@color/white"
+                android:textSize="20dp" />
         </LinearLayout>
 
 
     </RelativeLayout>
-
 
 </RelativeLayout>
