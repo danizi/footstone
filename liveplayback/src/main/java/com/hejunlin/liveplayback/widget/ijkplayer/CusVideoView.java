@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -55,8 +56,8 @@ public class CusVideoView extends FrameLayout {
         init();
     }
 
-    private void init(){
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.player_video_view,null,false);
+    private void init() {
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.player_video_view, null, false);
         addView(view);
 
         mVideoView = (IjkVideoView) view.findViewById(R.id.videoview);
@@ -84,6 +85,11 @@ public class CusVideoView extends FrameLayout {
     }
 
     public void initVideo(String url) {
+        if (TextUtils.isEmpty(url) || !url.startsWith("http") || url.startsWith("https")) {
+            Log.e("TAG", "intVideo url fail url:" + url);
+            return;
+        }
+        mRetryTimes = 0;
         Log.i("TAG", "url : " + url);
         if (!mVideoView.isBackgroundPlayEnabled()) {
             mVideoView.stopPlayback();
