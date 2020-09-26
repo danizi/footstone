@@ -14,16 +14,22 @@ import okhttp3.CacheControl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 // https://blog.csdn.net/Agg_bin/article/details/86628340
 public class RetrofitUtils {
-    public static boolean notNetworkConnected(Context applicationContext){
+
+    private static Retrofit INSTANCE = null;
+
+    private static boolean notNetworkConnected(Context applicationContext) {
         //通过getSystemService()方法得到connectionManager这个系统服务类，专门用于管理网络连接
         ConnectivityManager connectionManager = (ConnectivityManager) applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectionManager.getActiveNetworkInfo();
         return networkInfo == null || !networkInfo.isAvailable();
     }
 
-    public static OkHttpClient getOkHttpClient(final Context applicationContext) {
+    private static OkHttpClient getOkHttpClient(final Context applicationContext) {
         Interceptor interceptor = new Interceptor() {
             // 读取缓存时，就不会走intercept回调
             @Override
@@ -64,4 +70,19 @@ public class RetrofitUtils {
                 .readTimeout(30, TimeUnit.SECONDS)
                 .build();
     }
+
+    public static Retrofit getRetrofit(Context applicationContext) {
+        if (INSTANCE != null) {
+            return INSTANCE;
+        }
+        Retrofit.Builder builder = new Retrofit.Builder();
+        builder.baseUrl("http://192.168.0.8:8080/Live/");
+//        if (applicationContext != null) {
+//            builder.client(RetrofitUtils.getOkHttpClient(applicationContext));
+//        }
+        builder.addConverterFactory(GsonConverterFactory.create());
+        INSTANCE = builder.build();
+        return INSTANCE;
+    }
+
 }
