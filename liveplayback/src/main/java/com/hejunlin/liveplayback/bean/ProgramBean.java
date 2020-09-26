@@ -2,6 +2,9 @@ package com.hejunlin.liveplayback.bean;
 
 import java.util.List;
 
+/**
+ * 节目列表
+ */
 public class ProgramBean {
 
     /**

@@ -12,7 +12,7 @@ import retrofit2.http.POST;
 /**
  * 电视节目接口
  */
-public interface ProgramServer {
+public interface BizProgramServer {
     @POST("login")
     @FormUrlEncoded
     Call<List<ProgramBean>> postProgram(@Field("uid") String uid);
